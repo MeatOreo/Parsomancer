@@ -10,7 +10,7 @@ struct AppSettings
 {
     std::string name = "Default";
     int monitorSelection = 0;
-    ImVec4 backgroundColor = ImVec4(0.5f, 0.5f, 0.5f, 0.7f);
+    ImVec4 backgroundColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
 
 };
 
@@ -37,13 +37,13 @@ void MyGui();
 int main(int , char *[])
 {
 
-    if( !glfwInit() )
+    if(!glfwInit())
     {
-        fprintf( stderr, "Failed to initialize GLFW\n" );
-        exit( EXIT_FAILURE );
+        fprintf(stderr, "Failed to initialize GLFW\n");
+        exit(EXIT_FAILURE);
     }
 
-
+    glfwWindowHint(GLFW_DECORATED, false);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
     
     AppState appState;
@@ -61,7 +61,11 @@ int main(int , char *[])
     mainWindow.appWindowParams.borderless = true;
     mainWindow.appWindowParams.resizable = false;
 
-    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.5f);
+    mainWindow.imGuiWindowParams.showMenu_View_Themes = true;
+    mainWindow.imGuiWindowParams.showMenuBar = true;
+
+    // Set initial background color from settings
+    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.1f);
 
     mainWindow.callbacks.ShowGui = MyGui;
 
@@ -82,6 +86,8 @@ void MyGui() {
     ImGui::Text("Hello, world");
     if (ImGui::Button("Exit"))
         HelloImGui::GetRunnerParams()->appShallExit = true;
+  
+
 }
 
 
@@ -98,7 +104,7 @@ void moveAppToMonitor(AppState appState)
     // Default to primary monitor
     int selectedMonitor = 0;
     
-    // 
+    // Choose monitor based on settings
     if(!(appState.appSettings.name == "default"))
     {
         if(appState.appSettings.name == "cursor")
@@ -111,17 +117,12 @@ void moveAppToMonitor(AppState appState)
         }
     }
 
+    // Get resolution etc for selected monitor
     const GLFWvidmode* mode = glfwGetVideoMode(monitorArray[selectedMonitor]);
+    // Set app window to fullscreen in chosen monitor
     glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
         mode->width, mode->height, mode->refreshRate);
 
-    if (glfwGetWindowAttrib(appWindow, GLFW_TRANSPARENT_FRAMEBUFFER))
-    {
-        std::cout << "1";
-    } else 
-    {
-        std::cout << "0";
-    }
 
 
 }
