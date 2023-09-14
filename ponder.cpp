@@ -10,7 +10,6 @@ struct AppSettings
 {
     std::string name = "Default";
     int monitorSelection = 0;
-    ImVec4 backgroundColor = ImVec4(0.5f, 0.5f, 0.5f, 0.0f);
 
 };
 
@@ -65,7 +64,7 @@ int main(int , char *[])
     mainWindow.imGuiWindowParams.showMenuBar = true;
 
     // Set initial background color from settings
-    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.1f);
+    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
     mainWindow.callbacks.ShowGui = MyGui;
 
