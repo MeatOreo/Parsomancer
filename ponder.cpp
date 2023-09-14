@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "parse.h"
 
+// Data
 struct AppSettings
 {
     std::string name = "Default";
@@ -16,10 +17,17 @@ struct AppState
     int mode  = 0;
     AppSettings appSettings;
 };
+// END Data
 
 
+// Callbacks
+void moveAppToMonitor(AppState appState);
+// END Callbacks
+
+
+// Custom
 int getCursorMonitorIdx(GLFWwindow* window);
-void launchSequence(AppState appState);
+// END Custom
 
 int main(int , char *[])
 {
@@ -27,10 +35,12 @@ int main(int , char *[])
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
 
-    mainWindow.callbacks.PostInit = [&appState] {launchSequence(appState);};
+    mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
 
-    mainWindow.appWindowParams.windowGeometry.fullScreenMode = HelloImGui::FullScreenMode::NoFullScreen;
-    mainWindow.appWindowParams.windowGeometry.positionMode = HelloImGui::WindowPositionMode::MonitorCenter;
+    mainWindow.appWindowParams.windowGeometry.fullScreenMode 
+        = HelloImGui::FullScreenMode::NoFullScreen;
+    mainWindow.appWindowParams.windowGeometry.positionMode 
+        = HelloImGui::WindowPositionMode::MonitorCenter;
     mainWindow.appWindowParams.windowGeometry.monitorIdx = 0;
 
 
@@ -43,21 +53,34 @@ int main(int , char *[])
 
 
 
-void launchSequence(AppState appState)
+void moveAppToMonitor(AppState appState)
 {
+
+    int count; 
+    // For use after determining which monitor ID we want
+    GLFWmonitor** monitorArray = glfwGetMonitors(&count);
+    GLFWwindow* appWindow = (GLFWwindow*) HelloImGui::GetRunnerParams()->backendPointers.glfwWindow;
     
-
-    if(appState.appSettings.name == "default")
+    // Default to primary monitor
+    int selectedMonitor = 0;
+    
+    // 
+    if(!(appState.appSettings.name == "default"))
     {
-        HelloImGui::GetRunnerParams()->appWindowParams.windowGeometry.monitorIdx = 0;
-    }
-    else if(appState.appSettings.name == "cursor")
-    {
-        HelloImGui::GetRunnerParams()->appWindowParams.windowGeometry.monitorIdx = 
-        getCursorMonitorIdx((GLFWwindow*) HelloImGui::GetRunnerParams()->backendPointers.glfwWindow);
+        if(appState.appSettings.name == "cursor")
+        {
+            selectedMonitor = getCursorMonitorIdx(appWindow);
+        }
+        else if(appState.appSettings.name == "manual")
+        {
+            selectedMonitor = appState.appSettings.monitorSelection;
+        }
     }
 
-    HelloImGui::GetRunnerParams()->appWindowParams.windowGeometry.fullScreenMode = HelloImGui::FullScreenMode::FullScreenDesktopResolution;
+    const GLFWvidmode* mode = glfwGetVideoMode(monitorArray[selectedMonitor]);
+    glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
+        mode->width, mode->height, mode->refreshRate);
+
 }
 
 
