@@ -10,6 +10,8 @@ struct AppSettings
 {
     std::string name = "Default";
     int monitorSelection = 0;
+    ImVec4 backgroundColor = ImVec4(0.5f, 0.5f, 0.5f, 0.7f);
+
 };
 
 struct AppState
@@ -24,27 +26,50 @@ struct AppState
 void moveAppToMonitor(AppState appState);
 // END Callbacks
 
-
 // Custom
 int getCursorMonitorIdx(GLFWwindow* window);
 // END Custom
 
+// TEMP
+void MyGui();
+// END TEMP
+
 int main(int , char *[])
 {
+
+    if( !glfwInit() )
+    {
+        fprintf( stderr, "Failed to initialize GLFW\n" );
+        exit( EXIT_FAILURE );
+    }
+
+
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
     
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
 
+
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
 
+    // Parameters for initial test window, which is immediately reshaped to user setting
     mainWindow.appWindowParams.windowGeometry.fullScreenMode 
         = HelloImGui::FullScreenMode::NoFullScreen;
     mainWindow.appWindowParams.windowGeometry.positionMode 
         = HelloImGui::WindowPositionMode::MonitorCenter;
     mainWindow.appWindowParams.windowGeometry.monitorIdx = 0;
+    mainWindow.appWindowParams.borderless = true;
+    mainWindow.appWindowParams.resizable = false;
+
+    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.5f);
+
+    mainWindow.callbacks.ShowGui = MyGui;
 
 
     appState.appSettings.name = "cursor";
+
+
+
 
     HelloImGui::Run(mainWindow);
 
@@ -52,7 +77,16 @@ int main(int , char *[])
 }
 
 
+// TEST FUNCTION
+void MyGui() {
+    ImGui::Text("Hello, world");
+    if (ImGui::Button("Exit"))
+        HelloImGui::GetRunnerParams()->appShallExit = true;
+}
 
+
+
+// Moves the app window to the settings-selected monitor. Maybe should be two functions...
 void moveAppToMonitor(AppState appState)
 {
 
@@ -80,6 +114,15 @@ void moveAppToMonitor(AppState appState)
     const GLFWvidmode* mode = glfwGetVideoMode(monitorArray[selectedMonitor]);
     glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
         mode->width, mode->height, mode->refreshRate);
+
+    if (glfwGetWindowAttrib(appWindow, GLFW_TRANSPARENT_FRAMEBUFFER))
+    {
+        std::cout << "1";
+    } else 
+    {
+        std::cout << "0";
+    }
+
 
 }
 
