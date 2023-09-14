@@ -61,7 +61,7 @@ void launchSequence(AppState appState)
 }
 
 
-
+// Returns the monitor IDX of whichever screen the cursor is on
 int getCursorMonitorIdx(GLFWwindow* window)
 {
     bool success = false;
@@ -102,8 +102,6 @@ int getCursorMonitorIdx(GLFWwindow* window)
         ))
         // And if so, chooses monitor i as the returned handle
         {
-        //    UNNECESSARY
-        //    monitor = monitors[i];
             success = true;
             return i;
         }
@@ -111,22 +109,3 @@ int getCursorMonitorIdx(GLFWwindow* window)
     return 0;
 }
 
-// DOES NOT WORK, MAY NOT BE POSSIBLE
-/*
-int getActiveMonitor()
-{
-    int count;
-    GLFWmonitor** monitors = glfwGetMonitors(&count); 
-    
-    HMONITOR activeMonitor = MonitorFromWindow(GetForegroundWindow(),MONITOR_DEFAULTTOPRIMARY);
-    for (int i = 0; i < count; i++)
-    {
-        if (monitors[i] == activeMonitor)
-        {
-            return i;
-        }
-    }
-
-    return 3; // This should not be possible
-}
-*/
