@@ -22,4 +22,5 @@ include(hello_imgui_add_app)
 ##########################################################
 # Build your app
 ##########################################################
-hello_imgui_add_app(Parsomancer ponder.cpp)
+hello_imgui_add_app(Parsomancer src/ponder.cpp)
+

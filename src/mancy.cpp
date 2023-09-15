@@ -1,0 +1,1 @@
+// MANCY handles the dirty work of reading text out of the clipboard
