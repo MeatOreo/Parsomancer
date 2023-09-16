@@ -2,7 +2,7 @@
 // ORB contains GUI functions and handles visual settings
 #include "orb.h"
 
-
+// Changes main window theme to whatever it reads from settings
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
 {
     ImGuiTheme::ImGuiTweakedTheme tweakedTheme;

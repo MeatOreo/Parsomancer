@@ -2,33 +2,22 @@
 
 #include "orb.h"
 
+// INIT FUNCTIONS
+void configureTransparency();
+void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
+// END INIT FUNCTIONS
+
 
 int main(int , char *[])
 {
-    // Necessary to initialize glfw early to enact windowhints
-    if(!glfwInit())
-    {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        exit(EXIT_FAILURE);
-    }
 
-    // Ensures app window itself has no effect on aesthetics
-    glfwWindowHint(GLFW_DECORATED, false);
-    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
-    
+    configureTransparency();
+
+    // INITIALIZE CORE DATA
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
 
-
-    // Parameters for initial test window, which is immediately reshaped to user setting
-    mainWindow.appWindowParams.windowGeometry.fullScreenMode 
-        = HelloImGui::FullScreenMode::NoFullScreen;
-    mainWindow.appWindowParams.windowGeometry.positionMode 
-        = HelloImGui::WindowPositionMode::MonitorCenter;
-    mainWindow.appWindowParams.windowGeometry.monitorIdx = 0;
-    mainWindow.appWindowParams.borderless = true;
-    mainWindow.appWindowParams.resizable = false;
-    // END Test window params
+    configureWindowAPI(&mainWindow);
 
     setThemeTweaks(appState, &mainWindow);
 
@@ -36,20 +25,17 @@ int main(int , char *[])
     // mainWindow.imGuiWindowParams.showMenuBar = true;
     // mainWindow.imGuiWindowParams.showMenu_View;
 
-
+    // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
+    // END Hello_ImGui CALLBACKS
 
-    // Set no background color
-    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
 
     // TEMP
     mainWindow.callbacks.ShowGui = MyGui;
 
     // TEMP
     appState.appSettings.name = "cursor";
-
-
-
 
     HelloImGui::Run(mainWindow);
 
@@ -70,7 +56,7 @@ void MyGui() {
 
 
 
-// Moves the app window to the settings-selected monitor. Maybe should be two functions...
+// Moves the app window to the settings-selected monitor.
 void moveAppToMonitor(AppState appState)
 {
     int count; 
@@ -100,7 +86,6 @@ void moveAppToMonitor(AppState appState)
     glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
         mode->width, mode->height, mode->refreshRate);
 }
-
 
 // Returns the monitor IDX of whichever screen the cursor is on
 int getCursorMonitorIdx(GLFWwindow* window)
@@ -150,3 +135,36 @@ int getCursorMonitorIdx(GLFWwindow* window)
     return 0;
 }
 
+// Makes the background of the window transparent
+void configureTransparency()
+{
+    if(!glfwInit())
+    {
+        fprintf(stderr, "Failed to initialize GLFW\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Ensures app window itself has no effect on aesthetics
+    glfwWindowHint(GLFW_DECORATED, false);
+    glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
+}
+
+/* Sets up first pass at a window, which will then
+be moved to fullscreen on a chosen monitor */
+void configureWindowAPI(HelloImGui::RunnerParams* mainWindow)
+{
+    // Tests on primary monitor
+    mainWindow->appWindowParams.windowGeometry.monitorIdx = 0;
+
+    mainWindow->appWindowParams.windowGeometry.fullScreenMode 
+        = HelloImGui::FullScreenMode::NoFullScreen;
+    mainWindow->appWindowParams.windowGeometry.positionMode 
+        = HelloImGui::WindowPositionMode::MonitorCenter;
+
+    // A E S T H E T I C ?
+    mainWindow->appWindowParams.borderless = true;
+    mainWindow->appWindowParams.resizable = false;
+
+    // Set no background color
+    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+}
