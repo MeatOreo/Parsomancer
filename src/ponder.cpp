@@ -1,22 +1,24 @@
 #include "ponder.h"
 
+#include "orb.h"
+
+
 int main(int , char *[])
 {
-
+    // Necessary to initialize glfw early to enact windowhints
     if(!glfwInit())
     {
         fprintf(stderr, "Failed to initialize GLFW\n");
         exit(EXIT_FAILURE);
     }
 
+    // Ensures app window itself has no effect on aesthetics
     glfwWindowHint(GLFW_DECORATED, false);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
     
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
 
-
-    mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
 
     // Parameters for initial test window, which is immediately reshaped to user setting
     mainWindow.appWindowParams.windowGeometry.fullScreenMode 
@@ -26,16 +28,24 @@ int main(int , char *[])
     mainWindow.appWindowParams.windowGeometry.monitorIdx = 0;
     mainWindow.appWindowParams.borderless = true;
     mainWindow.appWindowParams.resizable = false;
+    // END Test window params
 
-    mainWindow.imGuiWindowParams.showMenu_View_Themes = true;
-    mainWindow.imGuiWindowParams.showMenuBar = true;
+    setThemeTweaks(appState, &mainWindow);
 
-    // Set initial background color from settings
+    // FOR TESTING
+    // mainWindow.imGuiWindowParams.showMenuBar = true;
+    // mainWindow.imGuiWindowParams.showMenu_View;
+
+
+    mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
+
+    // Set no background color
     mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
+    // TEMP
     mainWindow.callbacks.ShowGui = MyGui;
 
-
+    // TEMP
     appState.appSettings.name = "cursor";
 
 
@@ -45,6 +55,8 @@ int main(int , char *[])
 
     return 0;
 }
+
+
 
 
 // TEST FUNCTION
@@ -61,7 +73,6 @@ void MyGui() {
 // Moves the app window to the settings-selected monitor. Maybe should be two functions...
 void moveAppToMonitor(AppState appState)
 {
-
     int count; 
     // For use after determining which monitor ID we want
     GLFWmonitor** monitorArray = glfwGetMonitors(&count);
@@ -88,9 +99,6 @@ void moveAppToMonitor(AppState appState)
     // Set app window to fullscreen in chosen monitor
     glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
         mode->width, mode->height, mode->refreshRate);
-
-
-
 }
 
 

@@ -24,3 +24,9 @@ include(hello_imgui_add_app)
 ##########################################################
 hello_imgui_add_app(Parsomancer src/ponder.cpp)
 
+target_sources(
+Parsomancer 
+PRIVATE 
+src/orb.cpp
+src/orb.h
+src/parse.h)
