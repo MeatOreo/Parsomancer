@@ -74,7 +74,7 @@ void moveAppToMonitor(AppState appState)
     // Get resolution etc for selected monitor
     const GLFWvidmode* mode = glfwGetVideoMode(monitorArray[selectedMonitor]);
     // Set app window to fullscreen in chosen monitor
-    glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
+    glfwSetWindowMonitor(appWindow, nullptr, 0, 0, 
         mode->width, mode->height, mode->refreshRate);
 }
 
