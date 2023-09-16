@@ -6,4 +6,6 @@
 
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* runnerParams);
 
+void helpImTrappedInAGuiFactory();
+
 #endif // _ORB_

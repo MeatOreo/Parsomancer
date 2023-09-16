@@ -1,38 +1,36 @@
+#include "spellbook.h"
 #include "ponder.h"
-
 #include "orb.h"
 
-// INIT FUNCTIONS
+// CONFIG FUNCTIONS
 void configureTransparency();
 void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
-// END INIT FUNCTIONS
+// END CONFIG FUNCTIONS
 
 
 int main(int , char *[])
 {
 
-    configureTransparency();
-
     // INITIALIZE CORE DATA
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
+    // END CORE DATA
+
+    // CALL CONFIG FUNCTIONS
+    configureTransparency();
 
     configureWindowAPI(&mainWindow);
-
+    
     setThemeTweaks(appState, &mainWindow);
 
-    // FOR TESTING
-    // mainWindow.imGuiWindowParams.showMenuBar = true;
-    // mainWindow.imGuiWindowParams.showMenu_View;
+    // END CALL CONFIG FUNCTIONS
 
     // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
     // END Hello_ImGui CALLBACKS
 
-
-
     // TEMP
-    mainWindow.callbacks.ShowGui = MyGui;
+    mainWindow.callbacks.ShowGui = helpImTrappedInAGuiFactory;
 
     // TEMP
     appState.appSettings.name = "cursor";
@@ -45,14 +43,7 @@ int main(int , char *[])
 
 
 
-// TEST FUNCTION
-void MyGui() {
-    ImGui::Text("Hello, world");
-    if (ImGui::Button("Exit"))
-        HelloImGui::GetRunnerParams()->appShallExit = true;
-  
 
-}
 
 
 

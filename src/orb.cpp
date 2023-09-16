@@ -14,7 +14,16 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
 
     mainWindow->imGuiWindowParams.tweakedTheme = tweakedTheme;
 
-    mainWindow->imGuiWindowParams.showMenuBar = true;
-    mainWindow->imGuiWindowParams.showMenu_View;
+    // Just in case
+    mainWindow->imGuiWindowParams.showMenuBar = false;
+    mainWindow->imGuiWindowParams.showMenu_App = false;
+    mainWindow->imGuiWindowParams.showMenu_View = false;
 }
 
+// Primary GUI function
+void helpImTrappedInAGuiFactory() 
+{
+    ImGui::Text("Hello, world");
+    if (ImGui::Button("Exit"))
+        HelloImGui::GetRunnerParams()->appShallExit = true;
+}
