@@ -20,7 +20,7 @@ int main(int , char *[])
     configureTransparency();
 
     configureWindowAPI(&mainWindow);
-    
+
     setThemeTweaks(appState, &mainWindow);
 
     // END CALL CONFIG FUNCTIONS
@@ -158,4 +158,8 @@ void configureWindowAPI(HelloImGui::RunnerParams* mainWindow)
 
     // Set no background color
     mainWindow->imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+
+    // Reduce CPU usage, UNTESTED
+    mainWindow->fpsIdling.fpsIdle = 9;
+    mainWindow->fpsIdling.enableIdling = true;
 }

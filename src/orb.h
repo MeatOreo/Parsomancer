@@ -8,4 +8,6 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* runnerParams);
 
 void helpImTrappedInAGuiFactory();
 
+ImVec2 getTextSize(std::string text);
+
 #endif // _ORB_
