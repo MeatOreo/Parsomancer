@@ -166,5 +166,5 @@ void configureWindowAPI(HelloImGui::RunnerParams* mainWindow)
     mainWindow->appWindowParams.resizable = false;
 
     // Set no background color
-    mainWindow.imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
+    mainWindow->imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 }
