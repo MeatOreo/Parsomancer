@@ -10,6 +10,7 @@ void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
 
 int main(int , char *[])
 {
+    
 
     // INITIALIZE CORE DATA
     AppState appState;
@@ -27,6 +28,7 @@ int main(int , char *[])
 
     // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
+    mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(appState);};
     // END Hello_ImGui CALLBACKS
 
     // TEMP
