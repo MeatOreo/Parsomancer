@@ -17,6 +17,7 @@ struct AppSettings
     std::string aesthetic = "Inky Depths";
     int monitorSelection = 0;
     float transparency = 0.7f;
+    std::string readingFontChoice = "fonts\\Lato-Regular.ttf";
 
 };
 
@@ -24,6 +25,8 @@ struct AppState
 {
     int mode  = 0;
     AppSettings appSettings;
+    //ImFont* readingFontActive;
+
 };
 // END Data
 

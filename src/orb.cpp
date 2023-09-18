@@ -22,42 +22,46 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
 }
 
 // Primary GUI function
-void helpImTrappedInAGuiFactory() 
+void helpImTrappedInAGuiFactory(AppState appState) 
 {
 
     // Lorum
     std::string novel = "Check out this T E X T tho";
 
-
-
+    // Where are we
     auto windowSize = ImGui::GetWindowSize();
+
+    // TEMP
     auto textWidth   = getTextSize(novel).x;
 
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
     ImGui::SetCursorPosY(windowSize.y*0.5f);
     ImGui::Text(novel.c_str());
 
-    
+    //ImGui::PushFont(appState.readingFontActive);
     std::string start = "PARSE";
     textWidth = getTextSize(start).x;
     ImGui::SetCursorPosX((windowSize.x - textWidth)*0.5f);
     if (ImGui::Button(start.c_str()))
         HelloImGui::GetRunnerParams()->appShallExit = true;
+    //ImGui::PopFont();
 
-
+    // END TEMP
 
 }
 
 void addNiceFonts(AppState appState)
 {
     std::string fontFilename = "fonts\\Lato-Regular.ttf";
-    //if (HelloImGui::AssetExists(fontFilename))
+    if (HelloImGui::AssetExists(fontFilename))
     {
         float fontSize = 38.f;
-        ImFont* font = HelloImGui::LoadFontTTF_WithFontAwesomeIcons(fontFilename, fontSize, false);
-        (void)font;
+        ImFont* font = HelloImGui::
+        LoadFontTTF_WithFontAwesomeIcons(fontFilename, fontSize, false);
+        //appState.readingFontActive = HelloImGui::
+        //LoadFontTTF_WithFontAwesomeIcons(appState.appSettings.readingFontChoice, 12.f, false);
+        // (void)font; // wHY???
     }
-    //ImFont* font1 = HelloImGui::LoadFontTTF_WithFontAwesomeIcons("Lato/Lato-Regular.ttf", 48, false);
 }
 
 // Convenience

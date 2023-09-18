@@ -19,26 +19,24 @@ int main(int , char *[])
 
     // CALL CONFIG FUNCTIONS
     configureTransparency();
-
     configureWindowAPI(&mainWindow);
-
     setThemeTweaks(appState, &mainWindow);
-
-    // END CALL CONFIG FUNCTIONS
+    // END CONFIG FUNCTIONS
 
     // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
     mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(appState);};
+    mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(appState);};
     // END Hello_ImGui CALLBACKS
 
     // TEMP
-    mainWindow.callbacks.ShowGui = helpImTrappedInAGuiFactory;
-
-    // TEMP
     appState.appSettings.name = "cursor";
+    // TEMP
 
+    // THE REAL DEAL
     HelloImGui::Run(mainWindow);
 
+    // HERE BE DRAGONS
     return 0;
 }
 
