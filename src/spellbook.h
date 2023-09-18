@@ -18,6 +18,7 @@ struct AppSettings
     int monitorSelection = 0;
     float transparency = 0.7f;
     std::string readingFontChoice = "fonts\\Lato-Regular.ttf";
+    float readingFontSize = 48.f;
 
 };
 
@@ -25,7 +26,7 @@ struct AppState
 {
     int mode  = 0;
     AppSettings appSettings;
-    //ImFont* readingFontActive;
+    ImFont* readingFontActive;
 
 };
 // END Data

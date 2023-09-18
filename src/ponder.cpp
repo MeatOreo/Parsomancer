@@ -25,7 +25,7 @@ int main(int , char *[])
 
     // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
-    mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(appState);};
+    mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(&appState);};
     mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(appState);};
     // END Hello_ImGui CALLBACKS
 

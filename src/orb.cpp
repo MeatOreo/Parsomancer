@@ -34,7 +34,7 @@ void helpImTrappedInAGuiFactory(AppState appState)
     auto windowSize = ImGui::GetWindowSize();
 
     // TEMP
-    ImGui::PushFont(font1);
+    ImGui::PushFont(appState.readingFontActive);
 
     auto textWidth   = getTextSize(novel).x;
 
@@ -44,21 +44,19 @@ void helpImTrappedInAGuiFactory(AppState appState)
 
     ImGui::PopFont();
 
-    //ImGui::PushFont(appState.readingFontActive);
     std::string start = "PARSE";
     textWidth = getTextSize(start).x;
     ImGui::SetCursorPosX((windowSize.x - textWidth)*0.5f);
     if (ImGui::Button(start.c_str()))
         HelloImGui::GetRunnerParams()->appShallExit = true;
-    //ImGui::PopFont();
 
     // END TEMP
 
 }
 
-void addNiceFonts(AppState appState)
+void addNiceFonts(AppState* appState)
 {
-    std::string fontFilename = "fonts\\Lato-Regular.ttf";
+    std::string fontFilename = "fonts\\Lato-Light.ttf";
     if (HelloImGui::AssetExists(fontFilename))
     {
         float fontSize = 38.f;
@@ -68,7 +66,12 @@ void addNiceFonts(AppState appState)
         //LoadFontTTF_WithFontAwesomeIcons(appState.appSettings.readingFontChoice, 12.f, false);
         // (void)font; // wHY???
     }
-    font1 = HelloImGui::LoadFontTTF("fonts\\Lato-Light.ttf", 18.f, false);
+    appState->readingFontActive = HelloImGui::LoadFontTTF
+        (
+        appState->appSettings.readingFontChoice, 
+        appState->appSettings.readingFontSize, 
+        false
+        );
 }
 
 // Convenience
