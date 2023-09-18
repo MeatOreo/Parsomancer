@@ -10,8 +10,6 @@ void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
 
 int main(int , char *[])
 {
-    
-
     // INITIALIZE CORE DATA
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
@@ -71,11 +69,27 @@ void moveAppToMonitor(AppState appState)
         }
     }
 
+    int monitorCoords[2] = {0,0};
+    float monitorScale[2] = {0.f, 0.f};
     // Get resolution etc for selected monitor
     const GLFWvidmode* mode = glfwGetVideoMode(monitorArray[selectedMonitor]);
-    // Set app window to fullscreen in chosen monitor
-    glfwSetWindowMonitor(appWindow, monitorArray[selectedMonitor], 0, 0, 
-        mode->width, mode->height, mode->refreshRate);
+
+    // Find upper left corner of chosen monitor
+    glfwGetMonitorPos(monitorArray[selectedMonitor], &monitorCoords[0], &monitorCoords[1]);
+
+    // glfwGetMonitorWorkarea(monitorArray[selectedMonitor], &monitorCoords[0], &monitorCoords[1], nullptr, nullptr);
+
+    // Determine monitor scaling to set window size proportionately
+    glfwGetMonitorContentScale(monitorArray[selectedMonitor], &monitorScale[0], &monitorScale[1]);
+
+    // Move app window to upper left corner of selected monitor and set scale
+    // glfwSetWindowMonitor(appWindow, nullptr, monitorCoords[0], monitorCoords[1], 
+    //     (int)(mode->width / monitorScale[0]), (int)(300), mode ->refreshRate);
+
+    glfwSetWindowPos(appWindow, monitorCoords[0], monitorCoords[1]);
+    glfwSetWindowSize(appWindow, (int)(mode->width / monitorScale[0]), 
+        (int)(mode->height/ monitorScale[1]));
+    
 }
 
 // Returns the monitor IDX of whichever screen the cursor is on
@@ -138,19 +152,20 @@ void configureTransparency()
     // Ensures app window itself has no effect on aesthetics
     glfwWindowHint(GLFW_DECORATED, false);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);
+    glfwWindowHint(GLFW_FLOATING, true);
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, false);
 }
 
 /* Sets up first pass at a window, which will then
 be moved to fullscreen on a chosen monitor */
 void configureWindowAPI(HelloImGui::RunnerParams* mainWindow)
 {
-    // Tests on primary monitor
-    mainWindow->appWindowParams.windowGeometry.monitorIdx = 0;
+    mainWindow->appWindowParams.windowGeometry.position = {0,0};
 
     mainWindow->appWindowParams.windowGeometry.fullScreenMode 
         = HelloImGui::FullScreenMode::NoFullScreen;
     mainWindow->appWindowParams.windowGeometry.positionMode 
-        = HelloImGui::WindowPositionMode::MonitorCenter;
+        = HelloImGui::WindowPositionMode::FromCoords;
 
     // A E S T H E T I C ?
     mainWindow->appWindowParams.borderless = true;
