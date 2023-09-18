@@ -3,6 +3,8 @@
 #include "orb.h"
 #include <string>
 
+ImFont* font1;
+
 // Changes main window theme to whatever it reads from settings
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
 {
@@ -32,11 +34,15 @@ void helpImTrappedInAGuiFactory(AppState appState)
     auto windowSize = ImGui::GetWindowSize();
 
     // TEMP
+    ImGui::PushFont(font1);
+
     auto textWidth   = getTextSize(novel).x;
 
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
     ImGui::SetCursorPosY(windowSize.y*0.5f);
     ImGui::Text(novel.c_str());
+
+    ImGui::PopFont();
 
     //ImGui::PushFont(appState.readingFontActive);
     std::string start = "PARSE";
@@ -62,6 +68,7 @@ void addNiceFonts(AppState appState)
         //LoadFontTTF_WithFontAwesomeIcons(appState.appSettings.readingFontChoice, 12.f, false);
         // (void)font; // wHY???
     }
+    font1 = HelloImGui::LoadFontTTF("fonts\\Lato-Light.ttf", 18.f, false);
 }
 
 // Convenience
