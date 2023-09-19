@@ -47,11 +47,18 @@ void helpImTrappedInAGuiFactory(AppState* appState)
 
         if (ImGui::Button(start.c_str()))
         {
-            ImGui::PushFont(appState->readingFontActive);
-            drawCenteredText(novel);
-            ImGui::PopFont();
+            appState->currentTask = AppState::task::READING;
         }
     }
+    else if(appState->currentTask == AppState::task::READING)
+    {
+        ImGui::PushFont(appState->readingFontActive);
+
+        drawCenteredText(novel);
+
+        ImGui::PopFont();
+    }
+
 
 
 
