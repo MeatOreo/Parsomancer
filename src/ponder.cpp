@@ -2,13 +2,19 @@
 #include "ponder.h"
 #include "orb.h"
 
+#define USER_QUIT 0
 
 #include "parse.h"
 
 // CONFIG FUNCTIONS
 void configureTransparency();
 void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
+void launchSequence(AppState appState);
 // END CONFIG FUNCTIONS
+
+// CALLBACK FUNCTIONS
+void exitCallback(GLFWwindow* appWindow, int key, int scancode, int action, int mods);
+// END CALLBACK FUNCTIONS
 
 
 int main(int , char *[])
@@ -29,7 +35,7 @@ int main(int , char *[])
     // END CONFIG FUNCTIONS
 
     // Hello_ImGui CALLBACKS
-    mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
+    mainWindow.callbacks.PostInit = [&appState] {launchSequence(appState);};
     mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(&appState);};
     mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(&appState);};
     // END Hello_ImGui CALLBACKS
@@ -50,7 +56,22 @@ int main(int , char *[])
 
 
 
+// Prepares for the existence of the glfw window
+void launchSequence(AppState appState)
+{
+    moveAppToMonitor(appState);
 
+    glfwSetKeyCallback((GLFWwindow*) HelloImGui::GetRunnerParams()->backendPointers.glfwWindow, exitCallback);
+
+}
+
+void exitCallback(GLFWwindow* appWindow, int key, int scancode, int action, int mods)
+{
+    if(!(key == GLFW_KEY_SPACE) && action == GLFW_PRESS)
+    {
+        exit(USER_QUIT);
+    }
+}
 
 // Moves the app window to the settings-selected monitor.
 void moveAppToMonitor(AppState appState)

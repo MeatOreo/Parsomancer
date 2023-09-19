@@ -38,6 +38,8 @@ void helpImTrappedInAGuiFactory(AppState* appState)
 
     float textWidth = getTextSize(novel).x, textHeight = getTextSize(novel).y;
 
+    
+
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
     // This is a bit strange...
     ImGui::SetCursorPosY((windowSize.y) * 0.5f - (2*textHeight));
@@ -50,6 +52,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
     ImGui::SetCursorPosX((windowSize.x - textWidth)*0.5f);
     if (ImGui::Button(start.c_str()))
         HelloImGui::GetRunnerParams()->appShallExit = true;
+    
 
     // END TEMP
 
