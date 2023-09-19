@@ -3,6 +3,7 @@
 #include "orb.h"
 #include <string>
 
+void drawCenteredText(std::string words);
 
 // Changes main window theme to whatever it reads from settings
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
@@ -22,40 +23,50 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
     mainWindow->imGuiWindowParams.showMenu_View = false;
 }
 
-// Primary GUI function
+// Primary GUI function - Pretty sure this is going to become a statesync nightmare :)
 void helpImTrappedInAGuiFactory(AppState* appState) 
 {
 
     // Lorum
     std::string novel = appState->xerxes[2];
 
-
     // Where are we
     auto windowSize = ImGui::GetWindowSize();
 
-    // TEMP
-    ImGui::PushFont(appState->readingFontActive);
-
-    float textWidth = getTextSize(novel).x, textHeight = getTextSize(novel).y;
-
     
+    // Draw start button
+    if(appState->currentTask == AppState::task::WAITING)
+    {
+        // TEMP
+        std::string start = "PARSE";
+
+        float textWidth = getTextSize(start).x, textHeight = getTextSize(start).y;
+        textWidth = getTextSize(start).x;
+        ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
+        ImGui::SetCursorPosY((windowSize.y - textHeight) * 0.5f);
+
+        if (ImGui::Button(start.c_str()))
+        {
+            ImGui::PushFont(appState->readingFontActive);
+            drawCenteredText(novel);
+            ImGui::PopFont();
+        }
+    }
+
+
+
+}
+
+void drawCenteredText(std::string words)
+{
+    // Where are we
+    auto windowSize = ImGui::GetWindowSize();
+    float textWidth = getTextSize(words).x, textHeight = getTextSize(words).y;
 
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
     // This is a bit strange...
-    ImGui::SetCursorPosY((windowSize.y) * 0.5f - (2*textHeight));
-    ImGui::Text(novel.c_str());
-
-    ImGui::PopFont();
-
-    std::string start = "PARSE";
-    textWidth = getTextSize(start).x;
-    ImGui::SetCursorPosX((windowSize.x - textWidth)*0.5f);
-    if (ImGui::Button(start.c_str()))
-        HelloImGui::GetRunnerParams()->appShallExit = true;
-    
-
-    // END TEMP
-
+    ImGui::SetCursorPosY((windowSize.y - textHeight) * 0.5f);
+    ImGui::Text(words.c_str());
 }
 
 void addNiceFonts(AppState* appState)

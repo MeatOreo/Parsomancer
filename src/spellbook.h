@@ -11,6 +11,7 @@
 #define _SPELLBOOK_
 
 #include <vector>
+#include <chrono>
 
 // Data
 struct AppSettings
@@ -31,6 +32,15 @@ struct AppState
     ImFont* readingFontActive;
     std::vector<std::string> xerxes;
     std::string novella;
+    int timeOfLastWord;
+
+    // Track what the app is supposed to be doing
+    enum struct task
+    {
+        WAITING,
+        READING
+    } currentTask = task::WAITING;
+
 };
 
 
