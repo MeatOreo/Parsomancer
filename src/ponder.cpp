@@ -69,7 +69,7 @@ void exitCallback(GLFWwindow* appWindow, int key, int scancode, int action, int 
 {
     if(!(key == GLFW_KEY_SPACE) && action == GLFW_PRESS)
     {
-        exit(USER_QUIT);
+        HelloImGui::GetRunnerParams()->appShallExit = true;
     }
 }
 
