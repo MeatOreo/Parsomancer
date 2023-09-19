@@ -16,22 +16,40 @@
 // Data
 struct AppSettings
 {
+    // TEMP tracks what kind of window mode the user wants
     std::string name = "Default";
+
+    // TEMP
     std::string aesthetic = "Inky Depths";
+
+    // Monitor index the user wants the app to display on
     int monitorSelection = 0;
+
+    // Main window background alpha
     float transparency = 0.7f;
+
     std::string readingFontChoice = "fonts\\Lato-Regular.ttf";
     float readingFontSize = 48.f;
+
+    int wordsPerMinute = 300;
 
 };
 
 struct AppState
 {
+    // Does nothing?
     int mode  = 0;
+
     AppSettings appSettings;
+
     ImFont* readingFontActive;
+
+    // String of Strings
     std::vector<std::string> xerxes;
+    // String of the World
     std::string novella;
+
+    // Save what time the last word was displayed
     int timeOfLastWord;
 
     // Track what the app is supposed to be doing
@@ -41,6 +59,8 @@ struct AppState
         READING
     } currentTask = task::WAITING;
 
+    // Tracks how many words or phrases have been displayed
+    int xerxesIndex = 0;
 };
 
 

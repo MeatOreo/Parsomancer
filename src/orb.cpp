@@ -32,7 +32,6 @@ void helpImTrappedInAGuiFactory(AppState* appState)
 
     // Where are we
     auto windowSize = ImGui::GetWindowSize();
-
     
     // Draw start button
     if(appState->currentTask == AppState::task::WAITING)
@@ -50,13 +49,27 @@ void helpImTrappedInAGuiFactory(AppState* appState)
             appState->currentTask = AppState::task::READING;
         }
     }
+    // If reading mode is engaged, we need to:
+    // Find out what string we have to read
+    // Find out if it's been long enough to justify displaying it yet
+    // Display it or keep displaying the old one
     else if(appState->currentTask == AppState::task::READING)
     {
-        ImGui::PushFont(appState->readingFontActive);
+        if (!(appState->xerxesIndex >= appState->xerxes.size()))
+        {
+            ImGui::PushFont(appState->readingFontActive);
+            drawCenteredText(appState->xerxes[appState->xerxesIndex]);
+            ImGui::PopFont();
 
-        drawCenteredText(novel);
+            appState->xerxesIndex++;
+        }
+        else
+        {
+            // TEMP AS HECK
+            HelloImGui::GetRunnerParams()->appShallExit = true;
+        }
 
-        ImGui::PopFont();
+
     }
 
 
