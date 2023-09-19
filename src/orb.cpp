@@ -27,7 +27,8 @@ void helpImTrappedInAGuiFactory(AppState* appState)
 {
 
     // Lorum
-    std::string novel = appState->xerxes[1];
+    std::string novel = appState->xerxes[2];
+
 
     // Where are we
     auto windowSize = ImGui::GetWindowSize();
@@ -35,10 +36,11 @@ void helpImTrappedInAGuiFactory(AppState* appState)
     // TEMP
     ImGui::PushFont(appState->readingFontActive);
 
-    auto textWidth = getTextSize(novel).x;
+    float textWidth = getTextSize(novel).x, textHeight = getTextSize(novel).y;
 
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
-    ImGui::SetCursorPosY(windowSize.y*0.5f);
+    // This is a bit strange...
+    ImGui::SetCursorPosY((windowSize.y) * 0.5f - (2*textHeight));
     ImGui::Text(novel.c_str());
 
     ImGui::PopFont();
