@@ -14,12 +14,12 @@ void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
 int main(int , char *[])
 {
     // INITIALIZE CORE DATA
-    AppState appState;
+    struct AppState appState;
     HelloImGui::RunnerParams mainWindow;
     // END CORE DATA
 
     // PREPARE READING MATERIALS
-    [&appState] {readSelection(&appState);};
+    readSelection(appState);
     // END READING MATERIALS
 
     // CALL CONFIG FUNCTIONS
@@ -31,7 +31,7 @@ int main(int , char *[])
     // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {moveAppToMonitor(appState);};
     mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(&appState);};
-    mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(appState);};
+    mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(&appState);};
     // END Hello_ImGui CALLBACKS
 
     // TEMP

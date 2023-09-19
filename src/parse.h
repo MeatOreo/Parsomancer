@@ -25,4 +25,4 @@ he rejects pleasures to secure other greater \
 pleasures, or else he endures pains to avoid \
 worse pains."
 
-void readSelection(AppState* appState);
+void readSelection(AppState& appState);

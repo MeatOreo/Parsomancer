@@ -29,4 +29,9 @@ Parsomancer
 PRIVATE 
 src/orb.cpp
 src/orb.h
-src/parse.h)
+src/parse.h
+src/parse.cpp
+src/ponder.h
+src/mancy.h
+src/mancy.cpp
+)

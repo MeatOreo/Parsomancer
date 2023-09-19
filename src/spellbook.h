@@ -32,6 +32,8 @@ struct AppState
     std::vector<std::string> xerxes;
     std::string novella;
 };
+
+
 // END Data
 
 #endif // _SPELLBOOK_

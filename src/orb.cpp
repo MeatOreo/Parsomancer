@@ -3,7 +3,6 @@
 #include "orb.h"
 #include <string>
 
-ImFont* font1;
 
 // Changes main window theme to whatever it reads from settings
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
@@ -24,19 +23,19 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
 }
 
 // Primary GUI function
-void helpImTrappedInAGuiFactory(AppState appState) 
+void helpImTrappedInAGuiFactory(AppState* appState) 
 {
 
     // Lorum
-    std::string novel = appState.xerxes.at(1);
+    std::string novel = appState->xerxes[1];
 
     // Where are we
     auto windowSize = ImGui::GetWindowSize();
 
     // TEMP
-    ImGui::PushFont(appState.readingFontActive);
+    ImGui::PushFont(appState->readingFontActive);
 
-    auto textWidth   = getTextSize(novel).x;
+    auto textWidth = getTextSize(novel).x;
 
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
     ImGui::SetCursorPosY(windowSize.y*0.5f);

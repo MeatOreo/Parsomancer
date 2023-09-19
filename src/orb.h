@@ -6,7 +6,7 @@
 
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* runnerParams);
 
-void helpImTrappedInAGuiFactory(AppState appState);
+void helpImTrappedInAGuiFactory(AppState* appState);
 
 void addNiceFonts(AppState* appState);
 
