@@ -28,7 +28,7 @@ void helpImTrappedInAGuiFactory(AppState appState)
 {
 
     // Lorum
-    std::string novel = "Check out this T E X T tho";
+    std::string novel = appState.xerxes.at(1);
 
     // Where are we
     auto windowSize = ImGui::GetWindowSize();
@@ -62,9 +62,6 @@ void addNiceFonts(AppState* appState)
         float fontSize = 38.f;
         ImFont* font = HelloImGui::
         LoadFontTTF_WithFontAwesomeIcons(fontFilename, fontSize, false);
-        //appState.readingFontActive = HelloImGui::
-        //LoadFontTTF_WithFontAwesomeIcons(appState.appSettings.readingFontChoice, 12.f, false);
-        // (void)font; // wHY???
     }
     appState->readingFontActive = HelloImGui::LoadFontTTF
         (

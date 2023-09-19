@@ -10,6 +10,8 @@
 #ifndef _SPELLBOOK_
 #define _SPELLBOOK_
 
+#include <vector>
+
 // Data
 struct AppSettings
 {
@@ -27,7 +29,8 @@ struct AppState
     int mode  = 0;
     AppSettings appSettings;
     ImFont* readingFontActive;
-
+    std::vector<std::string> xerxes;
+    std::string novella;
 };
 // END Data
 

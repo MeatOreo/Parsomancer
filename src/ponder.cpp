@@ -2,6 +2,9 @@
 #include "ponder.h"
 #include "orb.h"
 
+
+#include "parse.h"
+
 // CONFIG FUNCTIONS
 void configureTransparency();
 void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
@@ -14,6 +17,10 @@ int main(int , char *[])
     AppState appState;
     HelloImGui::RunnerParams mainWindow;
     // END CORE DATA
+
+    // PREPARE READING MATERIALS
+    [&appState] {readSelection(&appState);};
+    // END READING MATERIALS
 
     // CALL CONFIG FUNCTIONS
     configureTransparency();

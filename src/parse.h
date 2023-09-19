@@ -1,4 +1,5 @@
 // PARSE contains functions related to deciding which words to put on screen
+#include "spellbook.h"
 
 #define LORUM_IPSUM "On the other hand, \
 we denounce with righteous indignation and dislike \
@@ -24,4 +25,4 @@ he rejects pleasures to secure other greater \
 pleasures, or else he endures pains to avoid \
 worse pains."
 
-int readSelection(std::string selection);
+void readSelection(AppState* appState);
