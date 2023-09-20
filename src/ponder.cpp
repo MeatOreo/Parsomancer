@@ -1,11 +1,16 @@
+#include <windows.h>
+#include <mutex>
+
 #include "spellbook.h"
-#include "ponder.h"
-#include "orb.h"
 
 #define USER_QUIT 0
 
+#include "ponder.h"
+#include "orb.h"
 #include "parse.h"
 #include "mancy.h"
+
+
 
 // CONFIG FUNCTIONS
 void configureTransparency();
@@ -17,9 +22,25 @@ void launchSequence(AppState appState);
 void exitCallback(GLFWwindow* appWindow, int key, int scancode, int action, int mods);
 // END CALLBACK FUNCTIONS
 
+// std::mutex m_singleInstanceMutex;
+
 
 int main(int , char *[])
-{
+{   
+    // BEGIN INSTANCE CHECK
+    HANDLE m_singleInstanceMutex = CreateMutex(NULL, TRUE, "Parsomancy");
+    // Check if app is already running, prevent multiple instances
+    if (GetLastError() == ERROR_ALREADY_EXISTS) 
+    {
+        HWND existingApp = FindWindow(0, "Parsomancer");
+        if (existingApp) 
+        {
+            SetForegroundWindow(existingApp);
+        }
+        return 6; // Exit the app. For MFC, return false from InitInstance.
+    }
+    // END INSTANCE CHECK
+
     // INITIALIZE CORE DATA
     struct AppState appState;
     HelloImGui::RunnerParams mainWindow;
@@ -190,6 +211,7 @@ void configureTransparency()
 be moved to fullscreen on a chosen monitor */
 void configureWindowAPI(HelloImGui::RunnerParams* mainWindow)
 {
+    mainWindow->appWindowParams.windowTitle = "Parsomancer";
     mainWindow->appWindowParams.windowGeometry.position = {0,0};
 
     mainWindow->appWindowParams.windowGeometry.fullScreenMode 

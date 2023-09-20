@@ -37,7 +37,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = true;
 
         // TEMP choose from list of fun start messages instead
-        std::string start = "O";
+        std::string start = "START READING";
 
         // Pad the button around its label
         ImVec2 buttonTextSize = getTextSize(start);
