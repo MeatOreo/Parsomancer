@@ -71,17 +71,20 @@ void helpImTrappedInAGuiFactory(AppState* appState)
             auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - appState->timeOfLastWord);
             if(msSinceLastWord >= wordDuration)
             {
-                ImGui::PushFont(appState->readingFontActive);
-                drawCenteredText(appState->xerxes[appState->xerxesIndex]);
-                ImGui::PopFont();
-
-                // Update timestamp to the freshly-displayed word
+                // Update timestamp to match the freshly-displayed word
                 appState->timeOfLastWord = std::chrono::steady_clock::now();
 
                 // Increment our progress through String of Strings
                 appState->xerxesIndex++;
             }
-
+            else
+            {
+                
+            }
+            // Draw wherever we are in Xerxes, String of Strings, every single frame
+            ImGui::PushFont(appState->readingFontActive);
+            drawCenteredText(appState->xerxes[appState->xerxesIndex]);
+            ImGui::PopFont();
         }
         else
         {
@@ -111,7 +114,9 @@ void drawCenteredText(std::string words)
 
 void addNiceFonts(AppState* appState)
 {
-    std::string fontFilename = "fonts\\Lato-Light.ttf";
+    // TEMP
+    std::string fontFilename = "fonts\\Lato-Black.ttf";
+    // Check if default font can be found, load it
     if (HelloImGui::AssetExists(fontFilename))
     {
         float fontSize = 38.f;

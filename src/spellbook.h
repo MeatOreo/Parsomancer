@@ -29,9 +29,9 @@ struct AppSettings
     float transparency = 0.7f;
 
     std::string readingFontChoice = "fonts\\Lato-Regular.ttf";
-    float readingFontSize = 48.f;
+    float readingFontSize = 64.f;
 
-    float wordsPerMinute = 100.f;
+    float wordsPerMinute = 400.f;
 
 };
 
