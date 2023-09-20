@@ -18,10 +18,7 @@ void readSelection(AppState& appState)
             std::string temp;
             temp.append(appState.novella, startIndex, endIndex - startIndex);
             appState.xerxes.push_back(temp);
-            appState.xerxesSize++;
             startIndex = endIndex + 1;
         }
     }
-    // Necessary???
-    appState.xerxesSize--;
 } 

@@ -12,6 +12,8 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
     if(appState.appSettings.aesthetic == "Inky Depths")
         {
             tweakedTheme.Theme = ImGuiTheme::ImGuiTheme_BlackIsBlack;
+            tweakedTheme.Tweaks.Rounding = 40.f;
+            tweakedTheme.Tweaks.ValueMultiplierFront = 2.f;
         }
     tweakedTheme.Tweaks.AlphaMultiplier = appState.appSettings.transparency;
 
@@ -42,10 +44,15 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
         ImGui::SetCursorPosY((windowSize.y) * 0.5f);
 
-        if (ImGui::Button(start.c_str()))
+        ImVec2 buttonSize = {textWidth * 1.5f, textHeight * 1.3f};
+
+        if (ImGui::Button(start.c_str(), buttonSize))
         {
             appState->currentTask = AppState::task::READING;
             appState->timeOfLastWord = std::chrono::steady_clock::now();
+
+            // Not strictly neccesary
+            appState->xerxesIndex = 0;
         }
     }
     // If reading mode is engaged, we need to:
@@ -62,7 +69,8 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         // Boy does this ever work
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
 
-        if (appState->xerxesIndex < (appState->xerxesSize))
+        // Why is the -1 necessary? Does this actually work?
+        if (appState->xerxesIndex < (appState->xerxes.size() - 1))
         {
             auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - appState->timeOfLastWord);
             if(msSinceLastWord >= wordDuration)
@@ -110,21 +118,21 @@ void drawCenteredText(std::string words)
 
 void addNiceFonts(AppState* appState)
 {
-    // TEMP
-    std::string fontFilename = "fonts\\Lato-Black.ttf";
     // Check if default font can be found, load it
-    if (HelloImGui::AssetExists(fontFilename))
+    if (HelloImGui::AssetExists(appState->appSettings.guiFontChoice))
     {
         float fontSize = 38.f;
-        ImFont* font = HelloImGui::
-        LoadFontTTF_WithFontAwesomeIcons(fontFilename, fontSize, false);
+        ImFont* guiFont = HelloImGui::
+            LoadFontTTF_WithFontAwesomeIcons(appState->appSettings.guiFontChoice, 
+            appState->appSettings.guiFontSize, false);
     }
-    appState->readingFontActive = HelloImGui::LoadFontTTF
-        (
-        appState->appSettings.readingFontChoice, 
-        appState->appSettings.readingFontSize, 
-        false
-        );
+    if (HelloImGui::AssetExists(appState->appSettings.readingFontChoice))
+    {
+        appState->readingFontActive = HelloImGui::
+            LoadFontTTF(appState->appSettings.readingFontChoice, 
+            appState->appSettings.readingFontSize, false);
+    }
+
 }
 
 // Convenience

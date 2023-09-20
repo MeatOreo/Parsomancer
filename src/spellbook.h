@@ -55,9 +55,12 @@ struct AppSettings
     float transparency = 0.7f;
 
     std::string readingFontChoice = "fonts\\OpenDyslexic-Regular.ttf";
-    float readingFontSize = 90.f;
+    float readingFontSize = 86.f;
 
-    float wordsPerMinute = 400.f;
+    std::string guiFontChoice = "fonts\\jaapokkisubtract-meatmod.ttf";
+    float guiFontSize = 64.f;
+
+    float wordsPerMinute = 350.f;
 
 };
 
@@ -83,9 +86,7 @@ struct AppState
     } currentTask = task::WAITING;
 
     // Tracks how many words or phrases have been displayed
-    int xerxesIndex = 0;
-
-    int xerxesSize = 0;
+    size_t xerxesIndex = 0;
 };
 // END Data
 
