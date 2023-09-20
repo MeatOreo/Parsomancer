@@ -54,8 +54,8 @@ struct AppSettings
     // Main window background alpha
     float transparency = 0.7f;
 
-    std::string readingFontChoice = "fonts\\Lato-Regular.ttf";
-    float readingFontSize = 64.f;
+    std::string readingFontChoice = "fonts\\OpenDyslexic-Regular.ttf";
+    float readingFontSize = 128.f;
 
     float wordsPerMinute = 400.f;
 
