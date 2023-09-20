@@ -40,7 +40,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         float textWidth = getTextSize(start).x, textHeight = getTextSize(start).y;
         textWidth = getTextSize(start).x;
         ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
-        ImGui::SetCursorPosY((windowSize.y - textHeight) * 0.5f);
+        ImGui::SetCursorPosY((windowSize.y) * 0.5f);
 
         if (ImGui::Button(start.c_str()))
         {
@@ -104,7 +104,7 @@ void drawCenteredText(std::string words)
 
     ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
     // This is a bit strange...
-    ImGui::SetCursorPosY((windowSize.y - textHeight) * 0.5f);
+    ImGui::SetCursorPosY((windowSize.y) * 0.5f);
     ImGui::Text(words.c_str());
 }
 

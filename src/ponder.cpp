@@ -5,6 +5,7 @@
 #define USER_QUIT 0
 
 #include "parse.h"
+#include "mancy.h"
 
 // CONFIG FUNCTIONS
 void configureTransparency();
@@ -25,6 +26,7 @@ int main(int , char *[])
     // END CORE DATA
 
     // PREPARE READING MATERIALS
+    getClippyText(appState);
     readSelection(appState);
     // END READING MATERIALS
 

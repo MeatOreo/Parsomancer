@@ -6,19 +6,26 @@
 
 void getClippyText(AppState& appState)
 {
-    //if (! OpenClipboard(nullptr))
-        // error
+    if (! OpenClipboard(nullptr))
+    {
+        exit(9);
+    }
 
     HANDLE hData = GetClipboardData(CF_TEXT);
 
-    //if(hData == nullptr)
-        // error
+    if(hData == nullptr)
+    {
+        exit(8);
+    }
+
 
     char* pszText = static_cast<char*>(GlobalLock(hData));
-    //if(pszText == nullptr)
-        // error
+    if(pszText == nullptr)
+    {
+        exit(3);
+    }
 
-    appState.novella.assign(pszText);
+    appState.novella = pszText;
 
     GlobalUnlock(hData);
 

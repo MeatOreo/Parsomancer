@@ -6,9 +6,6 @@
 
 void readSelection(AppState& appState)
 {
-    // TEMP
-    appState.novella = LORUM_IPSUM;
-
     char separator = ' ';
 
     // Custom split function
