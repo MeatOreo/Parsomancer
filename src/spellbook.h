@@ -55,7 +55,7 @@ struct AppSettings
     float transparency = 0.7f;
 
     std::string readingFontChoice = "fonts\\OpenDyslexic-Regular.ttf";
-    float readingFontSize = 128.f;
+    float readingFontSize = 90.f;
 
     float wordsPerMinute = 400.f;
 
@@ -84,6 +84,8 @@ struct AppState
 
     // Tracks how many words or phrases have been displayed
     int xerxesIndex = 0;
+
+    int xerxesSize = 0;
 };
 // END Data
 

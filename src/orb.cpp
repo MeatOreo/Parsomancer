@@ -62,7 +62,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         // Boy does this ever work
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
 
-        if (!(appState->xerxesIndex >= appState->xerxes.size()))
+        if (appState->xerxesIndex < (appState->xerxesSize))
         {
             auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - appState->timeOfLastWord);
             if(msSinceLastWord >= wordDuration)
@@ -75,7 +75,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
             }
             else
             {
-                
+                // Do nothing i suppose
             }
             // Draw wherever we are in Xerxes, String of Strings, every single frame
             ImGui::PushFont(appState->readingFontActive);
