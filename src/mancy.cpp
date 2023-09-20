@@ -31,3 +31,4 @@ void getClippyText(AppState& appState)
 
     CloseClipboard();
 }
+

@@ -57,7 +57,7 @@ struct AppSettings
     std::string readingFontChoice = "fonts\\OpenDyslexic-Regular.ttf";
     float readingFontSize = 86.f;
 
-    std::string guiFontChoice = "fonts\\jaapokkisubtract-meatmod.ttf";
+    std::string guiFontChoice = "fonts\\Lato-Black.ttf";
     float guiFontSize = 64.f;
 
     float wordsPerMinute = 350.f;

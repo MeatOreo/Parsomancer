@@ -36,15 +36,19 @@ void helpImTrappedInAGuiFactory(AppState* appState)
     {
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = true;
 
-        // TEMP
-        std::string start = "PARSE";
+        // TEMP choose from list of fun start messages instead
+        std::string start = "O";
 
-        float textWidth = getTextSize(start).x, textHeight = getTextSize(start).y;
-        textWidth = getTextSize(start).x;
-        ImGui::SetCursorPosX((windowSize.x - textWidth) * 0.5f);
-        ImGui::SetCursorPosY((windowSize.y) * 0.5f);
+        // Pad the button around its label
+        ImVec2 buttonTextSize = getTextSize(start);
+        ImVec2 buttonSize = {buttonTextSize.x + 60.f, buttonTextSize.y + 20.f};
 
-        ImVec2 buttonSize = {textWidth * 1.5f, textHeight * 1.3f};
+        // Place button in center of screen
+        ImVec2 buttonPosition = {(windowSize.x - buttonSize.x) * 0.5f, 
+            (windowSize.y) * 0.5f};
+        ImGui::SetCursorPos(buttonPosition);
+
+
 
         if (ImGui::Button(start.c_str(), buttonSize))
         {
@@ -95,13 +99,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
             // TEMP AS HECK
             HelloImGui::GetRunnerParams()->appShallExit = true;
         }
-
-
     }
-
-
-
-
 }
 
 void drawCenteredText(std::string words)
@@ -132,7 +130,6 @@ void addNiceFonts(AppState* appState)
             LoadFontTTF(appState->appSettings.readingFontChoice, 
             appState->appSettings.readingFontSize, false);
     }
-
 }
 
 // Convenience
