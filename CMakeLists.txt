@@ -35,3 +35,8 @@ src/ponder.h
 src/mancy.h
 src/mancy.cpp
 )
+
+add_custom_target(copy_assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/assets ${CMAKE_CURRENT_BINARY_DIR}/assets
+)
+add_dependencies(Parsomancer copy_assets)
