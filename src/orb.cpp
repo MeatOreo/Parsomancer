@@ -26,10 +26,6 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
 // Primary GUI function - Pretty sure this is going to become a statesync nightmare :)
 void helpImTrappedInAGuiFactory(AppState* appState) 
 {
-
-    // Lorum
-    std::string novel = appState->xerxes[2];
-
     // Where are we
     auto windowSize = ImGui::GetWindowSize();
     

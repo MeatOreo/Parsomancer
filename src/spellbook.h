@@ -37,9 +37,6 @@ struct AppSettings
 
 struct AppState
 {
-    // Does nothing?
-    int mode  = 0;
-
     AppSettings appSettings;
 
     ImFont* readingFontActive;
