@@ -202,7 +202,8 @@ void configureWindowAPI(HelloImGui::RunnerParams* mainWindow)
     // Set no background color
     mainWindow->imGuiWindowParams.backgroundColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
-    // Reduce CPU usage, UNTESTED
-    mainWindow->fpsIdling.fpsIdle = 9;
-    mainWindow->fpsIdling.enableIdling = true;
+    // In case we want to reduce CPU usage, UNTESTED
+    mainWindow->fpsIdling.fpsIdle = 5;
+    // Start FAST
+    mainWindow->fpsIdling.enableIdling = false;
 }

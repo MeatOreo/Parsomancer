@@ -31,7 +31,7 @@ struct AppSettings
     std::string readingFontChoice = "fonts\\Lato-Regular.ttf";
     float readingFontSize = 48.f;
 
-    int wordsPerMinute = 300;
+    float wordsPerMinute = 100.f;
 
 };
 
@@ -50,7 +50,7 @@ struct AppState
     std::string novella;
 
     // Save what time the last word was displayed
-    int timeOfLastWord;
+    std::chrono::time_point<std::chrono::steady_clock> timeOfLastWord;
 
     // Track what the app is supposed to be doing
     enum struct task

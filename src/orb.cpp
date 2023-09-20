@@ -36,6 +36,8 @@ void helpImTrappedInAGuiFactory(AppState* appState)
     // Draw start button
     if(appState->currentTask == AppState::task::WAITING)
     {
+        HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = true;
+
         // TEMP
         std::string start = "PARSE";
 
@@ -47,6 +49,7 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         if (ImGui::Button(start.c_str()))
         {
             appState->currentTask = AppState::task::READING;
+            appState->timeOfLastWord = std::chrono::steady_clock::now();
         }
     }
     // If reading mode is engaged, we need to:
@@ -55,13 +58,30 @@ void helpImTrappedInAGuiFactory(AppState* appState)
     // Display it or keep displaying the old one
     else if(appState->currentTask == AppState::task::READING)
     {
+
+        // Probably don't need to be calculating this every single frame...
+        // Though it does let us adjust wpm dynamically
+        const std::chrono::milliseconds wordDuration((int)(1000 * (60.f / appState->appSettings.wordsPerMinute)));
+
+        // Boy does this ever work
+        HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
+
         if (!(appState->xerxesIndex >= appState->xerxes.size()))
         {
-            ImGui::PushFont(appState->readingFontActive);
-            drawCenteredText(appState->xerxes[appState->xerxesIndex]);
-            ImGui::PopFont();
+            auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - appState->timeOfLastWord);
+            if(msSinceLastWord >= wordDuration)
+            {
+                ImGui::PushFont(appState->readingFontActive);
+                drawCenteredText(appState->xerxes[appState->xerxesIndex]);
+                ImGui::PopFont();
 
-            appState->xerxesIndex++;
+                // Update timestamp to the freshly-displayed word
+                appState->timeOfLastWord = std::chrono::steady_clock::now();
+
+                // Increment our progress through String of Strings
+                appState->xerxesIndex++;
+            }
+
         }
         else
         {
