@@ -13,7 +13,7 @@
 #include <vector>
 #include <chrono>
 
-// DEFAULT TEXT IN CASE OF ERROR
+// DEFAULT TEXT FOR TESTING
 #define LORUM_IPSUM "On the other hand, \
 we denounce with righteous indignation and dislike \
 men who are so beguiled and demoralized by the \
@@ -60,7 +60,7 @@ struct AppSettings
     std::string guiFontChoice = "fonts\\Lato-Black.ttf";
     float guiFontSize = 64.f;
 
-    float wordsPerMinute = 350.f;
+    float wordsPerMinute = 450.f;
 
 };
 

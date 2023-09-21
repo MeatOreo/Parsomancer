@@ -12,10 +12,11 @@ void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
     if(appState.appSettings.aesthetic == "Inky Depths")
         {
             tweakedTheme.Theme = ImGuiTheme::ImGuiTheme_BlackIsBlack;
-            tweakedTheme.Tweaks.Rounding = 40.f;
-            tweakedTheme.Tweaks.ValueMultiplierFront = 2.f;
         }
     tweakedTheme.Tweaks.AlphaMultiplier = appState.appSettings.transparency;
+    tweakedTheme.Tweaks.Rounding = 40.f;
+    tweakedTheme.Tweaks.ValueMultiplierFront = 2.f;
+    
 
     mainWindow->imGuiWindowParams.tweakedTheme = tweakedTheme;
 
