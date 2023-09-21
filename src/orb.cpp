@@ -5,35 +5,24 @@
 
 void drawCenteredText(std::string words);
 
-// Changes main window theme to whatever it reads from settings
-void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
-{
-    ImGuiTheme::ImGuiTweakedTheme tweakedTheme;
-    if(appState.appSettings.aesthetic == "Inky Depths")
-        {
-            tweakedTheme.Theme = ImGuiTheme::ImGuiTheme_BlackIsBlack;
-        }
-    tweakedTheme.Tweaks.AlphaMultiplier = appState.appSettings.transparency;
-    tweakedTheme.Tweaks.Rounding = 40.f;
-    tweakedTheme.Tweaks.ValueMultiplierFront = 2.f;
-    
-
-    mainWindow->imGuiWindowParams.tweakedTheme = tweakedTheme;
-
-    // Just in case
-    mainWindow->imGuiWindowParams.showMenuBar = false;
-    mainWindow->imGuiWindowParams.showMenu_App = false;
-    mainWindow->imGuiWindowParams.showMenu_View = false;
-}
-
-// Primary GUI function - Pretty sure this is going to become a statesync nightmare :)
+// PRIMARY GUI FUNCTION
 void helpImTrappedInAGuiFactory(AppState* appState) 
 {
     // Where are we
-    auto windowSize = ImGui::GetWindowSize();
-    
+    ImVec2 windowSize = ImGui::GetWindowSize();
+
+    if(appState->currentTask == AppState::task::LAUNCHING)
+    {   
+        // Why can't I just do this with ImGui, come on now
+        // Anyways we're moving the cursor to the middle so you can instantly click start
+        glfwSetCursorPos((GLFWwindow*) HelloImGui::GetRunnerParams()->backendPointers.glfwWindow, 
+        windowSize.x * 0.5f, windowSize.y * 0.5f);
+
+        // ENDS LAUNCH SECTION
+        appState->currentTask = AppState::task::WAITING;
+    }
     // Draw start button
-    if(appState->currentTask == AppState::task::WAITING)
+    else if(appState->currentTask == AppState::task::WAITING)
     {
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = true;
 
@@ -59,6 +48,8 @@ void helpImTrappedInAGuiFactory(AppState* appState)
             // Not strictly neccesary
             appState->xerxesIndex = 0;
         }
+
+
     }
     // If reading mode is engaged, we need to:
     // Find out what string we have to read
@@ -69,7 +60,8 @@ void helpImTrappedInAGuiFactory(AppState* appState)
 
         // Probably don't need to be calculating this every single frame...
         // Though it does let us adjust wpm dynamically
-        const std::chrono::milliseconds wordDuration((int)(1000 * (60.f / appState->appSettings.wordsPerMinute)));
+        const std::chrono::milliseconds wordDuration((int)(1000 * 
+            (60.f / appState->appSettings.wordsPerMinute)));
 
         // Boy does this ever work
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
@@ -77,10 +69,11 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         // Why is the -1 necessary? Does this actually work?
         if (appState->xerxesIndex < (appState->xerxes.size() - 1))
         {
-            auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - appState->timeOfLastWord);
+            auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>
+                (std::chrono::steady_clock::now() - appState->timeOfLastWord);
+
             if(msSinceLastWord >= wordDuration)
             {
-                // Update timestamp to match the freshly-displayed word
                 appState->timeOfLastWord = std::chrono::steady_clock::now();
 
                 // Increment our progress through String of Strings
@@ -102,7 +95,10 @@ void helpImTrappedInAGuiFactory(AppState* appState)
         }
     }
 }
+// END PRIMARY GUI FUNCTION
 
+
+// CONVENIENCE FUNCTIONS
 void drawCenteredText(std::string words)
 {
     // Where are we
@@ -113,6 +109,35 @@ void drawCenteredText(std::string words)
     // This is a bit strange...
     ImGui::SetCursorPosY((windowSize.y) * 0.5f);
     ImGui::Text(words.c_str());
+}
+
+ImVec2 getTextSize(std::string text)
+{
+    return ImGui::CalcTextSize(text.c_str());
+}
+// END CONVENIENCE FUNCTIONS
+
+
+// AESTHETIC FUNCTIONS
+// Changes main window theme to whatever it reads from settings
+void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* mainWindow)
+{
+    ImGuiTheme::ImGuiTweakedTheme tweakedTheme;
+    if(appState.appSettings.aesthetic == "Inky Depths")
+        {
+            tweakedTheme.Theme = ImGuiTheme::ImGuiTheme_BlackIsBlack;
+        }
+    tweakedTheme.Tweaks.AlphaMultiplier = appState.appSettings.transparency;
+    tweakedTheme.Tweaks.Rounding = 40.f;
+    tweakedTheme.Tweaks.ValueMultiplierFront = 2.f;
+    
+
+    mainWindow->imGuiWindowParams.tweakedTheme = tweakedTheme;
+
+    // Just in case
+    mainWindow->imGuiWindowParams.showMenuBar = false;
+    mainWindow->imGuiWindowParams.showMenu_App = false;
+    mainWindow->imGuiWindowParams.showMenu_View = false;
 }
 
 void addNiceFonts(AppState* appState)
@@ -132,9 +157,5 @@ void addNiceFonts(AppState* appState)
             appState->appSettings.readingFontSize, false);
     }
 }
+// END AESTHETIC FUNCTIONS
 
-// Convenience
-ImVec2 getTextSize(std::string text)
-{
-    return ImGui::CalcTextSize(text.c_str());
-}

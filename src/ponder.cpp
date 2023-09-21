@@ -3,26 +3,23 @@
 
 #include "spellbook.h"
 
-#define USER_QUIT 0
-
 #include "ponder.h"
 #include "orb.h"
 #include "parse.h"
 #include "mancy.h"
 
-
+#define USER_QUIT 0
 
 // CONFIG FUNCTIONS
 void configureTransparency();
 void configureWindowAPI(HelloImGui::RunnerParams* mainWindow);
-void launchSequence(AppState appState);
+void launchSequence(AppState& appState);
 // END CONFIG FUNCTIONS
 
-// CALLBACK FUNCTIONS
+// GLFW CALLBACK FUNCTIONS
 void exitCallback(GLFWwindow* appWindow, int key, int scancode, int action, int mods);
-// END CALLBACK FUNCTIONS
-
-// std::mutex m_singleInstanceMutex;
+void waitForFocus(GLFWwindow* appWindow, int focused);
+// END GLFW CALLBACK FUNCTIONS
 
 
 int main(int , char *[])
@@ -80,14 +77,28 @@ int main(int , char *[])
 
 
 // Prepares for the existence of the glfw window
-void launchSequence(AppState appState)
+void launchSequence(AppState& appState)
 {
     moveAppToMonitor(appState);
 
-    glfwSetKeyCallback((GLFWwindow*) HelloImGui::GetRunnerParams()->backendPointers.glfwWindow, exitCallback);
+    glfwSetKeyCallback((GLFWwindow*) HelloImGui::GetRunnerParams()->
+        backendPointers.glfwWindow, exitCallback);
 
+    glfwSetWindowFocusCallback((GLFWwindow*) HelloImGui::GetRunnerParams()->
+        backendPointers.glfwWindow, waitForFocus);
+
+    appState.currentTask = AppState::task::LAUNCHING;
 }
 
+void waitForFocus(GLFWwindow* appWindow, int focused)
+{
+    if (focused)
+    {
+        // well shit
+    }
+}
+
+// NOTE: This is not the only place where keyboard controls come from
 void exitCallback(GLFWwindow* appWindow, int key, int scancode, int action, int mods)
 {
     if(!(key == GLFW_KEY_SPACE) && action == GLFW_PRESS)

@@ -81,9 +81,11 @@ struct AppState
     // Track what the app is supposed to be doing
     enum struct task
     {
+        INIT,
+        LAUNCHING,
         WAITING,
         READING
-    } currentTask = task::WAITING;
+    } currentTask = task::INIT;
 
     // Tracks how many words or phrases have been displayed
     size_t xerxesIndex = 0;
