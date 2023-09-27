@@ -60,8 +60,9 @@ struct AppSettings
     std::string guiFontChoice = "fonts\\Lato-Black.ttf";
     float guiFontSize = 64.f;
 
-    float wordsPerMinute = 450.f;
+    float wordsPerMinute = 250.f;
 
+    bool rampUp = true;
 };
 
 struct AppState
@@ -89,6 +90,8 @@ struct AppState
 
     // Tracks how many words or phrases have been displayed
     size_t xerxesIndex = 0;
+
+    float currentWordsPerMinute = 100.f;
 };
 // END Data
 

@@ -6,10 +6,12 @@
 
 void setThemeTweaks(AppState appState, HelloImGui::RunnerParams* runnerParams);
 
-void helpImTrappedInAGuiFactory(AppState* appState);
+void helpImTrappedInAGuiFactory(AppState& appState);
 
 void addNiceFonts(AppState* appState);
 
 ImVec2 getTextSize(std::string text);
+
+void centerCursor(GLFWwindow* appWindow);
 
 #endif // _ORB_

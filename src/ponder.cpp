@@ -38,10 +38,28 @@ int main(int , char *[])
     }
     // END INSTANCE CHECK
 
+
+    // INIT GLFW
+    if(!glfwInit())
+    {
+        fprintf(stderr, "Failed to initialize GLFW\n");
+        exit(EXIT_FAILURE);
+    }
+    // END INIT GLFW
+
+
     // INITIALIZE CORE DATA
     struct AppState appState;
     HelloImGui::RunnerParams mainWindow;
     // END CORE DATA
+
+    // LOAD SETTINGS
+    if(appState.appSettings.rampUp == true)
+    {
+        appState.currentWordsPerMinute = 0.66f * appState.appSettings.wordsPerMinute;
+    }
+    appState.appSettings.name = "cursor";
+    // END LOAD SETTINGS
 
     // PREPARE READING MATERIALS
     getClippyText(appState);
@@ -57,12 +75,8 @@ int main(int , char *[])
     // Hello_ImGui CALLBACKS
     mainWindow.callbacks.PostInit = [&appState] {launchSequence(appState);};
     mainWindow.callbacks.LoadAdditionalFonts = [&appState] {addNiceFonts(&appState);};
-    mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(&appState);};
+    mainWindow.callbacks.ShowGui = [&appState] {helpImTrappedInAGuiFactory(appState);};
     // END Hello_ImGui CALLBACKS
-
-    // TEMP
-    appState.appSettings.name = "cursor";
-    // TEMP
 
     // THE REAL DEAL
     HelloImGui::Run(mainWindow);
@@ -94,7 +108,9 @@ void waitForFocus(GLFWwindow* appWindow, int focused)
 {
     if (focused)
     {
-        // well shit
+        // centerCursor();
+
+        centerCursor(appWindow);
     }
 }
 
@@ -205,12 +221,6 @@ int getCursorMonitorIdx(GLFWwindow* window)
 // Makes the background of the window transparent
 void configureTransparency()
 {
-    if(!glfwInit())
-    {
-        fprintf(stderr, "Failed to initialize GLFW\n");
-        exit(EXIT_FAILURE);
-    }
-
     // Ensures app window itself has no effect on aesthetics
     glfwWindowHint(GLFW_DECORATED, false);
     glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, true);

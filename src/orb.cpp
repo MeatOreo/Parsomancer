@@ -4,88 +4,66 @@
 #include <string>
 
 void drawCenteredText(std::string words);
+void calcRampUp(AppState& appState);
+void drawStartButton(AppState& appState);
+
 
 // PRIMARY GUI FUNCTION
-void helpImTrappedInAGuiFactory(AppState* appState) 
+void helpImTrappedInAGuiFactory(AppState& appState) 
 {
-    // Where are we
-    ImVec2 windowSize = ImGui::GetWindowSize();
-
-    if(appState->currentTask == AppState::task::LAUNCHING)
+    if(appState.currentTask == AppState::task::LAUNCHING)
     {   
-        // Why can't I just do this with ImGui, come on now
-        // Anyways we're moving the cursor to the middle so you can instantly click start
-        glfwSetCursorPos((GLFWwindow*) HelloImGui::GetRunnerParams()->backendPointers.glfwWindow, 
-        windowSize.x * 0.5f, windowSize.y * 0.5f);
+        HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
 
+        drawStartButton(appState);
+    
         // ENDS LAUNCH SECTION
-        appState->currentTask = AppState::task::WAITING;
+        appState.currentTask = AppState::task::WAITING;
     }
     // Draw start button
-    else if(appState->currentTask == AppState::task::WAITING)
+    else if(appState.currentTask == AppState::task::WAITING)
     {
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = true;
 
-        // TEMP choose from list of fun start messages instead
-        std::string start = "START READING";
 
-        // Pad the button around its label
-        ImVec2 buttonTextSize = getTextSize(start);
-        ImVec2 buttonSize = {buttonTextSize.x + 60.f, buttonTextSize.y + 20.f};
-
-        // Place button in center of screen
-        ImVec2 buttonPosition = {(windowSize.x - buttonSize.x) * 0.5f, 
-            (windowSize.y) * 0.5f};
-        ImGui::SetCursorPos(buttonPosition);
-
-
-
-        if (ImGui::Button(start.c_str(), buttonSize))
-        {
-            appState->currentTask = AppState::task::READING;
-            appState->timeOfLastWord = std::chrono::steady_clock::now();
-
-            // Not strictly neccesary
-            appState->xerxesIndex = 0;
-        }
-
-
+        drawStartButton(appState);
     }
     // If reading mode is engaged, we need to:
     // Find out what string we have to read
     // Find out if it's been long enough to justify displaying it yet
     // Display it or keep displaying the old one
-    else if(appState->currentTask == AppState::task::READING)
+    else if(appState.currentTask == AppState::task::READING)
     {
 
-        // Probably don't need to be calculating this every single frame...
-        // Though it does let us adjust wpm dynamically
-        const std::chrono::milliseconds wordDuration((int)(1000 * 
-            (60.f / appState->appSettings.wordsPerMinute)));
-
-        // Boy does this ever work
+        // GOTTA GO FAST
         HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
 
-        // Why is the -1 necessary? Does this actually work?
-        if (appState->xerxesIndex < (appState->xerxes.size() - 1))
+        // Calculating this here lets us dynamically change reading speed
+        const std::chrono::milliseconds wordDuration((int)(1000 * 
+            (60.f / appState.currentWordsPerMinute)));
+
+        // Still not sure why the -1 is needed but it works
+        if (appState.xerxesIndex < (appState.xerxes.size() - 1))
         {
             auto msSinceLastWord = std::chrono::duration_cast<std::chrono::milliseconds>
-                (std::chrono::steady_clock::now() - appState->timeOfLastWord);
+                (std::chrono::steady_clock::now() - appState.timeOfLastWord);
 
             if(msSinceLastWord >= wordDuration)
             {
-                appState->timeOfLastWord = std::chrono::steady_clock::now();
+                appState.timeOfLastWord = std::chrono::steady_clock::now();
 
                 // Increment our progress through String of Strings
-                appState->xerxesIndex++;
+                appState.xerxesIndex++;
+
+                calcRampUp(appState);
             }
             else
             {
                 // Do nothing i suppose
             }
             // Draw wherever we are in Xerxes, String of Strings, every single frame
-            ImGui::PushFont(appState->readingFontActive);
-            drawCenteredText(appState->xerxes[appState->xerxesIndex]);
+            ImGui::PushFont(appState.readingFontActive);
+            drawCenteredText(appState.xerxes[appState.xerxesIndex]);
             ImGui::PopFont();
         }
         else
@@ -159,3 +137,59 @@ void addNiceFonts(AppState* appState)
 }
 // END AESTHETIC FUNCTIONS
 
+
+// CONTROL FUNCTIONS
+// Handles curving WPM towards dynamically set value
+void calcRampUp(AppState& appState)
+{
+    if (appState.appSettings.rampUp == true)
+    {
+        appState.currentWordsPerMinute = 
+        (appState.currentWordsPerMinute + appState.appSettings.wordsPerMinute) * 0.66f;
+    }
+}
+
+void drawStartButton(AppState& appState)
+{   
+    // TEMP choose from list of fun start messages instead
+    std::string start = "START READING";
+
+    // Where are we
+    ImVec2 windowSize = ImGui::GetWindowSize();
+    // Pad the button around its label
+    ImVec2 buttonTextSize = getTextSize(start);
+    ImVec2 buttonSize = {buttonTextSize.x + 60.f, buttonTextSize.y + 20.f};
+
+    // Place button in center of screen
+    ImVec2 buttonPosition = {(windowSize.x - buttonSize.x) * 0.5f, 
+        (windowSize.y) * 0.5f};
+    ImGui::SetCursorPos(buttonPosition);
+
+    if (ImGui::Button(start.c_str(), buttonSize) 
+        && appState.currentTask == AppState::task::WAITING)
+    {
+        appState.currentTask = AppState::task::READING;
+        appState.timeOfLastWord = std::chrono::steady_clock::now();
+
+        // Not strictly neccesary
+        appState.xerxesIndex = 0;
+    }
+}
+
+void centerCursor(GLFWwindow* appWindow)
+{       
+    int windowX, windowY;
+    // Where are we
+    glfwGetWindowSize(appWindow, &windowX, &windowY);
+    // Move cursor to middle of screen for instant start clicking
+    // NOT WORKING???
+    // glfwSetInputMode((GLFWwindow*) HelloImGui::GetRunnerParams()->
+    //     backendPointers.glfwWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glfwSetCursorPos(appWindow, windowX * 0.5, windowY * 0.52);
+
+    // glfwSetInputMode((GLFWwindow*) HelloImGui::GetRunnerParams()->
+    //     backendPointers.glfwWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+}
+// END CONTROL FUNCTIONS
