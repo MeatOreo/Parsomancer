@@ -13,10 +13,7 @@ void helpImTrappedInAGuiFactory(AppState& appState)
 {
     if(appState.currentTask == AppState::task::LAUNCHING)
     {   
-        HelloImGui::GetRunnerParams()->fpsIdling.enableIdling = false;
 
-        drawStartButton(appState);
-    
         // ENDS LAUNCH SECTION
         appState.currentTask = AppState::task::WAITING;
     }
@@ -66,7 +63,7 @@ void helpImTrappedInAGuiFactory(AppState& appState)
             drawCenteredText(appState.xerxes[appState.xerxesIndex]);
             ImGui::PopFont();
         }
-        else
+        else 
         {
             // TEMP AS HECK
             HelloImGui::GetRunnerParams()->appShallExit = true;
@@ -145,7 +142,11 @@ void calcRampUp(AppState& appState)
     if (appState.appSettings.rampUp == true)
     {
         appState.currentWordsPerMinute = 
-        (appState.currentWordsPerMinute + appState.appSettings.wordsPerMinute) * 0.66f;
+        (appState.currentWordsPerMinute + appState.appSettings.wordsPerMinute) * 0.5f;
+    }
+    else
+    {
+        appState.currentWordsPerMinute = appState.appSettings.wordsPerMinute;
     }
 }
 

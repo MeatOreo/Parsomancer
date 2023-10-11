@@ -60,7 +60,7 @@ struct AppSettings
     std::string guiFontChoice = "fonts\\Lato-Black.ttf";
     float guiFontSize = 64.f;
 
-    float wordsPerMinute = 250.f;
+    float wordsPerMinute = 300.f;
 
     bool rampUp = true;
 };
